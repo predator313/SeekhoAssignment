@@ -12,6 +12,14 @@ fun PokeMonListResponse.toPokeMonListUiState(): List<PokeMonUiState> {
                 numberOfEpisode = it.numberOfEpisode ?: 0,
                 rating = it.rating ?: 0f,
                 posterImg = it.posterImg?.jpg?.imageUrl,
+                genres = it.genres?.map { genre ->
+                    genre.name
+                } ?: emptyList(),
+                casts = it.mainCast?.map { cast ->
+                    cast.name
+                } ?: emptyList(),
+                plot = it.synopsis ?: "",
+                trailer = it.trailer?.url,
             )
         }
     }

@@ -13,9 +13,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.seekhoassignment.presentation.components.PokeMonScreen
 import com.example.seekhoassignment.ui.theme.SeekhoAssignmentTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,11 +32,16 @@ class MainActivity : ComponentActivity() {
         setContent {
             SeekhoAssignmentTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        modifier = Modifier.fillMaxSize().padding(innerPadding),
-                        onClick = {
-                            pokeMonViewModel.getAnimeList()
-                        }
+//                    Greeting(
+//                        modifier = Modifier.fillMaxSize().padding(innerPadding),
+//                        onClick = {
+//                            pokeMonViewModel.getAnimeList()
+//                        }
+//                    )
+                    val pokeMonListUiState by pokeMonViewModel.pokeMonListUiStateFlow.collectAsState()
+                    PokeMonScreen(
+                        pokeMonListUiState = pokeMonListUiState,
+                        modifier = Modifier.fillMaxSize().padding(innerPadding)
                     )
                 }
             }
@@ -40,20 +49,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-) {
-
-    Column(
-        modifier = modifier,
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "Fetch Data",
-            modifier = Modifier.clickable { onClick() }
-        )
-    }
-}

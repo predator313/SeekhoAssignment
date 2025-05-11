@@ -14,11 +14,8 @@ data class PokeMonItem(
     @SerializedName("score") val rating: Float?,
 )
 
-
-
 data class ImageFormats(
     val jpg: ImageUrls?,
-    val webp: ImageUrls?
 )
 
 data class ImageUrls(

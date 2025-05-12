@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.seekhoassignment.R
@@ -42,8 +43,10 @@ fun NewDesignBottomSheetTitleSection(
             )
             Text(
                 modifier = Modifier.align(Alignment.Center),
-                text = title,
+                text = title.take(20),
                 color = Color.White,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 style = MaterialTheme.typography.titleMedium.copy(fontSize = 18.sp),
             )
         }

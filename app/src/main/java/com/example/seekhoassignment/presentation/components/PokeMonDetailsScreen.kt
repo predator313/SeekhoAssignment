@@ -1,6 +1,11 @@
 package com.example.seekhoassignment.presentation.components
 
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -9,6 +14,7 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -62,16 +68,21 @@ fun PokeMonDetailScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ){
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(pokeMonUiState.posterImg)
-                    .placeholder(R.drawable.ic_launcher_foreground)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = "pokeMon img",
-                contentScale = ContentScale.Crop,
 
-            )
+            pokeMonUiState.trailer?.let {  url ->
+                WatchTrailer(youtubeUrl = url)
+            } ?: kotlin.run {
+                AsyncImage(
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(pokeMonUiState.posterImg)
+                        .placeholder(R.drawable.ic_launcher_foreground)
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = "pokeMon img",
+                    contentScale = ContentScale.Crop,
+
+                    )
+            }
 
             Text(
                 text = pokeMonUiState.plot,
@@ -98,6 +109,38 @@ fun PokeMonDetailScreen(
                 text = "Rating ${pokeMonUiState.rating}"
             )
         }
+    }
+
+}
+
+@Composable
+private fun WatchTrailer(
+    youtubeUrl: String,
+    modifier: Modifier = Modifier,
+) {
+    val context = LocalContext.current
+    Box(
+        modifier = modifier.fillMaxWidth()
+            .background(color = Color.Magenta, shape = RoundedCornerShape(50))
+            .clickable {
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                    data = Uri.parse(youtubeUrl)
+                    setPackage("com.google.android.youtube")
+                }
+
+                try {
+                    context.startActivity(intent)
+                } catch (e: Exception) {
+                    val fallbackIntent = Intent(Intent.ACTION_VIEW, Uri.parse(youtubeUrl))
+                    context.startActivity(fallbackIntent)
+                }
+            },
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = "Watch Trailer",
+            color = Color.White
+        )
     }
 
 }
